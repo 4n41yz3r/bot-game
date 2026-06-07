@@ -34,6 +34,60 @@ describe("executeCommand", () => {
     expect(result.bot.fuel).toBe(0);
     expect(result.status).toBe("lost");
   });
+
+  it("wins when the bot moves onto the goal", () => {
+    const game = gameWithBot({ position: { x: 3, y: 3 } });
+    game.squares[2][3] = { type: "goal" };
+
+    const result = executeCommand(game, "move");
+
+    expect(result.status).toBe("won");
+  });
+
+  it("loses when the bot moves onto a hazard", () => {
+    const game = gameWithBot({ position: { x: 3, y: 3 } });
+    game.squares[2][3] = { type: "hazard" };
+
+    const result = executeCommand(game, "move");
+
+    expect(result.status).toBe("lost");
+  });
+
+  it("loses when the bot moves outside the map", () => {
+    const game = gameWithBot({ position: { x: 3, y: 0 } });
+
+    const result = executeCommand(game, "move");
+
+    expect(result.status).toBe("lost");
+  });
+
+  it("adds 3 fuel after move cost when collecting a power-up", () => {
+    const game = gameWithBot({ position: { x: 3, y: 3 }, fuel: 8 });
+    game.squares[2][3] = { type: "power-up" };
+
+    const result = executeCommand(game, "move");
+
+    expect(result.bot.fuel).toBe(9);
+    expect(result.squares[2][3].collected).toBe(true);
+  });
+
+  it("does not add fuel when re-entering a collected power-up", () => {
+    const game = gameWithBot({ position: { x: 3, y: 3 }, fuel: 8 });
+    game.squares[2][3] = { type: "power-up", collected: true };
+
+    const result = executeCommand(game, "move");
+
+    expect(result.bot.fuel).toBe(6);
+  });
+
+  it("allows fuel to exceed the initial amount after collecting a power-up", () => {
+    const game = gameWithBot({ position: { x: 3, y: 3 }, fuel: 10 });
+    game.squares[2][3] = { type: "power-up" };
+
+    const result = executeCommand(game, "move");
+
+    expect(result.bot.fuel).toBe(11);
+  });
 });
 
 function gameWithBot(
@@ -53,4 +107,3 @@ function gameWithBot(
     status: "playing"
   };
 }
-

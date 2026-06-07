@@ -73,14 +73,17 @@ function turnLeft(game: GameState): GameState {
 }
 
 function moveForward(game: GameState): GameState {
-  return {
+  const position = nextPosition(game.bot.position, game.bot.direction);
+  const movedGame = {
     ...game,
     bot: {
       ...game.bot,
-      position: nextPosition(game.bot.position, game.bot.direction),
+      position,
       fuel: game.bot.fuel - MOVE_FUEL_COST
     }
   };
+
+  return applySquareInteraction(movedGame, position);
 }
 
 function leftOf(direction: Direction): Direction {
@@ -107,6 +110,63 @@ function nextPosition(position: Position, direction: Direction): Position {
     x: position.x + offset.x,
     y: position.y + offset.y
   };
+}
+
+function applySquareInteraction(game: GameState, position: Position): GameState {
+  if (!isInsideMap(game, position)) {
+    return {
+      ...game,
+      status: "lost"
+    };
+  }
+
+  const square = game.squares[position.y][position.x];
+
+  if (square.type === "goal") {
+    return {
+      ...game,
+      status: "won"
+    };
+  }
+
+  if (square.type === "hazard") {
+    return {
+      ...game,
+      status: "lost"
+    };
+  }
+
+  if (square.type === "power-up" && !square.collected) {
+    return collectPowerUp(game, position);
+  }
+
+  return game;
+}
+
+function collectPowerUp(game: GameState, position: Position): GameState {
+  return {
+    ...game,
+    bot: {
+      ...game.bot,
+      fuel: game.bot.fuel + 3
+    },
+    squares: game.squares.map((row, y) =>
+      row.map((square, x) =>
+        x === position.x && y === position.y
+          ? { ...square, collected: true }
+          : square
+      )
+    )
+  };
+}
+
+function isInsideMap(game: GameState, position: Position): boolean {
+  return (
+    position.x >= 0 &&
+    position.x < game.width &&
+    position.y >= 0 &&
+    position.y < game.height
+  );
 }
 
 function shuffledPositions(): Position[] {
