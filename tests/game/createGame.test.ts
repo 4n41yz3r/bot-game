@@ -11,5 +11,44 @@ describe("createGame", () => {
     expect(game.status).toBe("playing");
     expect(game.bot.fuel).toBe(10);
   });
+
+  it("creates an 8 by 8 square map", () => {
+    const game = createGame();
+
+    expect(game.squares).toHaveLength(8);
+    expect(game.squares.every((row) => row.length === 8)).toBe(true);
+  });
+
+  it("places the bot inside the map", () => {
+    const game = createGame();
+
+    expect(game.bot.position.x).toBeGreaterThanOrEqual(0);
+    expect(game.bot.position.x).toBeLessThan(8);
+    expect(game.bot.position.y).toBeGreaterThanOrEqual(0);
+    expect(game.bot.position.y).toBeLessThan(8);
+  });
+
+  it("places one goal, 10 hazards, and 5 power-ups", () => {
+    const game = createGame();
+    const counts = countSquares(game.squares);
+
+    expect(counts.goal).toBe(1);
+    expect(counts.hazard).toBe(10);
+    expect(counts["power-up"]).toBe(5);
+  });
 });
 
+function countSquares(squares: ReturnType<typeof createGame>["squares"]) {
+  return squares.flat().reduce(
+    (counts, square) => ({
+      ...counts,
+      [square.type]: counts[square.type] + 1
+    }),
+    {
+      empty: 0,
+      hazard: 0,
+      "power-up": 0,
+      goal: 0
+    }
+  );
+}

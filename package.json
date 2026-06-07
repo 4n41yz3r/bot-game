@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "bdd": "node scripts/bdd-smoke.mjs",
+    "bdd:setup": "cucumber-js features/game_setup.feature --import tests/bdd/**/*.js",
     "bdd:features": "cucumber-js",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui"
