@@ -13,6 +13,7 @@
     "bdd:setup": "cucumber-js features/game_setup.feature --import tests/bdd/**/*.js",
     "bdd:movement": "cucumber-js features/bot_movement.feature --import tests/bdd/**/*.js",
     "bdd:map": "cucumber-js features/map_interactions.feature --import tests/bdd/**/*.js",
+    "bdd:program": "cucumber-js features/program_execution.feature --import tests/bdd/**/*.js",
     "bdd:features": "cucumber-js",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui"

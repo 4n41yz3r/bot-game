@@ -1,6 +1,7 @@
 import type {
   BotCommand,
   Direction,
+  GameResult,
   GameState,
   MapSquare,
   Position,
@@ -53,6 +54,34 @@ export function executeCommand(game: GameState, command: BotCommand): GameState 
   }
 
   return updatedGame;
+}
+
+export function runProgram(
+  game: GameState,
+  playerCode: string
+): GameResult {
+  let state = game;
+  const commands = {
+    turn_left() {
+      state = executeCommand(state, "turn_left");
+    },
+    move() {
+      state = executeCommand(state, "move");
+    }
+  };
+
+  const program = new Function(
+    "turn_left",
+    "move",
+    `"use strict";\n${playerCode}`
+  );
+
+  program(commands.turn_left, commands.move);
+
+  return {
+    state,
+    attempts: 1
+  };
 }
 
 function createEmptyMap(): MapSquare[][] {

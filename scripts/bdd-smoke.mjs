@@ -24,7 +24,7 @@ if (result.error) {
 if (result.status === 0 || output.includes("undefined")) {
   process.stdout.write(output);
   process.stdout.write(
-    "\nCucumber parsed the feature files. Step definitions are implemented in later phases.\n"
+    "\nCucumber parsed the feature files and loaded the current step definitions.\n"
   );
   process.exit(0);
 }

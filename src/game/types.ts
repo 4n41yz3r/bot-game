@@ -29,3 +29,8 @@ export type GameState = {
   squares: MapSquare[][];
   status: GameStatus;
 };
+
+export type GameResult = {
+  state: GameState;
+  attempts: 1;
+};
