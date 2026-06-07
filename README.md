@@ -16,7 +16,7 @@ The bot provides two built-in commands:
 | Command | Effect | Fuel cost |
 | --- | --- | ---: |
 | `turn_left()` | Turns the bot 90 degrees to the left. | 1 point |
-| `move()` | Moves the bot one square in the direction it is facing. | 2 points |
+| `move()` | Moves the bot one square in the direction it is facing. | 1 point |
 
 There is no built-in `turn_right()` command. A player can turn right by calling
 `turn_left()` three times, or define a helper function such as:

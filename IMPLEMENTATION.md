@@ -123,7 +123,7 @@ The built-in bot commands are:
 `turn_left()` rotates the bot 90 degrees left and costs 1 fuel point.
 
 `move()` moves the bot one square in the direction it is facing and costs
-2 fuel points.
+1 fuel point.
 
 There is no built-in `turn_right()` command. Player code can define
 `turn_right()` or any other helper function using JavaScript.
@@ -237,4 +237,3 @@ Playwright tests cover the browser UI:
 - the player can enter a program
 - running a program updates the game state
 - win and loss messages appear correctly
-

@@ -16,7 +16,9 @@ body {
 }
 
 main {
+  box-sizing: border-box;
   padding: 2rem;
+  width: 100%;
 }
 
 h1 {
@@ -27,18 +29,96 @@ h1 {
   align-items: start;
   display: grid;
   gap: 2rem;
-  grid-template-columns: auto minmax(18rem, 28rem);
+  grid-template-columns: 384px minmax(0, 1fr);
+  width: 100%;
+}
+
+.map-frame {
+  height: 384px;
+  position: relative;
+  width: 384px;
 }
 
 canvas {
   background: #f8fafc;
   border: 2px solid #94a3b8;
   border-radius: 0.5rem;
+  box-sizing: border-box;
+  display: block;
+}
+
+.robot-pictogram {
+  height: 40px;
+  pointer-events: none;
+  position: absolute;
+  transform-origin: center;
+  transition:
+    left 120ms ease,
+    top 120ms ease,
+    transform 120ms ease;
+  width: 40px;
+}
+
+.robot-pictogram svg {
+  display: block;
+  height: 100%;
+  overflow: visible;
+  width: 100%;
+}
+
+.robot-body {
+  fill: #2563eb;
+  stroke: #0f172a;
+  stroke-width: 2;
+}
+
+.robot-track {
+  fill: #475569;
+  stroke: #0f172a;
+  stroke-width: 2;
+}
+
+.robot-front {
+  fill: #bfdbfe;
+  stroke: #0f172a;
+  stroke-width: 2;
+}
+
+.robot-sensor {
+  fill: #e0f2fe;
+  stroke: #0f172a;
+  stroke-width: 2;
+}
+
+.robot-panel {
+  fill: none;
+  stroke: #e2e8f0;
+  stroke-linecap: round;
+  stroke-width: 3;
 }
 
 .control-panel {
   display: grid;
   gap: 0.75rem;
+  min-width: 0;
+  width: 100%;
+}
+
+.legend {
+  background: rgb(15 23 42 / 0.72);
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  display: grid;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0.75rem;
+}
+
+.legend span {
+  display: inline-block;
+  font-weight: 700;
+  width: 1.5rem;
 }
 
 .control-panel p {
@@ -51,13 +131,10 @@ label {
   font-weight: 700;
 }
 
-textarea {
-  background: #020617;
-  border: 1px solid #64748b;
-  border-radius: 0.5rem;
-  color: #e2e8f0;
-  font: 1rem Consolas, "Courier New", monospace;
-  padding: 0.75rem;
+.editor-frame {
+  display: block;
+  min-width: 0;
+  width: 100%;
 }
 
 button {

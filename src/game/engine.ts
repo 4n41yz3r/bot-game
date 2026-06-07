@@ -14,7 +14,7 @@ const STARTING_FUEL = 10;
 const HAZARD_COUNT = 10;
 const POWER_UP_COUNT = 5;
 const TURN_LEFT_FUEL_COST = 1;
-const MOVE_FUEL_COST = 2;
+const MOVE_FUEL_COST = 1;
 
 export function createGame(): GameState {
   const squares = createEmptyMap();

@@ -13,7 +13,7 @@ describe("executeCommand", () => {
     expect(result.bot.fuel).toBe(9);
   });
 
-  it("moves the bot one square forward and spends 2 fuel points", () => {
+  it("moves the bot one square forward and spends 1 fuel point", () => {
     const game = gameWithBot({
       position: { x: 3, y: 3 },
       direction: "north",
@@ -23,7 +23,7 @@ describe("executeCommand", () => {
     const result = executeCommand(game, "move");
 
     expect(result.bot.position).toEqual({ x: 3, y: 2 });
-    expect(result.bot.fuel).toBe(8);
+    expect(result.bot.fuel).toBe(9);
   });
 
   it("loses when a command leaves the bot with 0 fuel before reaching the goal", () => {
@@ -67,7 +67,7 @@ describe("executeCommand", () => {
 
     const result = executeCommand(game, "move");
 
-    expect(result.bot.fuel).toBe(9);
+    expect(result.bot.fuel).toBe(10);
     expect(result.squares[2][3].collected).toBe(true);
   });
 
@@ -77,7 +77,7 @@ describe("executeCommand", () => {
 
     const result = executeCommand(game, "move");
 
-    expect(result.bot.fuel).toBe(6);
+    expect(result.bot.fuel).toBe(7);
   });
 
   it("allows fuel to exceed the initial amount after collecting a power-up", () => {
@@ -86,7 +86,7 @@ describe("executeCommand", () => {
 
     const result = executeCommand(game, "move");
 
-    expect(result.bot.fuel).toBe(11);
+    expect(result.bot.fuel).toBe(12);
   });
 });
 

@@ -12,7 +12,7 @@ describe("runProgram", () => {
     expect(result.attempts).toBe(1);
     expect(result.state.bot.direction).toBe("west");
     expect(result.state.bot.position).toEqual({ x: 2, y: 3 });
-    expect(result.state.bot.fuel).toBe(7);
+    expect(result.state.bot.fuel).toBe(8);
   });
 
   it("allows player-defined helper functions", () => {
@@ -44,7 +44,7 @@ describe("runProgram", () => {
     expect(result.state.status).toBe("won");
     expect(result.state.bot.direction).toBe("north");
     expect(result.state.bot.position).toEqual({ x: 3, y: 2 });
-    expect(result.state.bot.fuel).toBe(8);
+    expect(result.state.bot.fuel).toBe(9);
   });
 
   it("does not expose common global objects to player code", () => {
