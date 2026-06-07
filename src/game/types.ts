@@ -4,6 +4,8 @@ export type SquareType = "empty" | "hazard" | "power-up" | "goal";
 
 export type GameStatus = "playing" | "won" | "lost";
 
+export type BotCommand = "turn_left" | "move";
+
 export type Position = {
   x: number;
   y: number;
@@ -27,4 +29,3 @@ export type GameState = {
   squares: MapSquare[][];
   status: GameStatus;
 };
-

@@ -2,7 +2,12 @@ import { spawnSync } from "node:child_process";
 
 const result = spawnSync(
   process.execPath,
-  ["./node_modules/@cucumber/cucumber/bin/cucumber-js", "--dry-run"],
+  [
+    "./node_modules/@cucumber/cucumber/bin/cucumber-js",
+    "--dry-run",
+    "--import",
+    "tests/bdd/**/*.js"
+  ],
   {
     shell: false,
     stdio: "pipe"

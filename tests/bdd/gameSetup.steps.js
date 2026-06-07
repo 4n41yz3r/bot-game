@@ -6,6 +6,7 @@ import { createGame } from "../../src/game/engine.ts";
 
 When("a new game is started", function () {
   this.game = createGame();
+  this.createdGame = true;
 });
 
 Then("the map is an {int} by {int} grid", function (width, height) {
@@ -34,10 +35,6 @@ Then("the map contains {int} power-ups", function (count) {
   assert.equal(countSquares(this.game, "power-up"), count);
 });
 
-Then("the bot has {int} fuel points", function (fuel) {
-  assert.equal(this.game.bot.fuel, fuel);
-});
-
 function countSquares(game, squareType) {
   return game.squares.flat().filter((square) => square.type === squareType)
     .length;
@@ -51,4 +48,3 @@ function isInsideMap(position, game) {
     position.y < game.height
   );
 }
-
