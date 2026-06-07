@@ -46,6 +46,28 @@ describe("runProgram", () => {
     expect(result.state.bot.position).toEqual({ x: 3, y: 2 });
     expect(result.state.bot.fuel).toBe(8);
   });
+
+  it("does not expose common global objects to player code", () => {
+    const game = gameWithBot();
+
+    const result = runProgram(
+      game,
+      `
+      if (
+        typeof globalThis !== "undefined" ||
+        typeof window !== "undefined" ||
+        typeof document !== "undefined" ||
+        typeof self !== "undefined"
+      ) {
+        move();
+      }
+      turn_left();
+      `
+    );
+
+    expect(result.state.bot.position).toEqual({ x: 3, y: 3 });
+    expect(result.state.bot.direction).toBe("west");
+  });
 });
 
 function gameWithBot(): GameState {
@@ -63,4 +85,3 @@ function gameWithBot(): GameState {
     status: "playing"
   };
 }
-

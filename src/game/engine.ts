@@ -73,10 +73,23 @@ export function runProgram(
   const program = new Function(
     "turn_left",
     "move",
+    "globalThis",
+    "window",
+    "self",
+    "document",
+    "Function",
     `"use strict";\n${playerCode}`
   );
 
-  program(commands.turn_left, commands.move);
+  program(
+    commands.turn_left,
+    commands.move,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined
+  );
 
   return {
     state,
