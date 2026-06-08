@@ -121,10 +121,33 @@ canvas {
   width: 1.5rem;
 }
 
+.legend strong {
+  display: inline-block;
+  margin-right: 0.35rem;
+  min-width: 4.5rem;
+}
+
+.legend small {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+
 .control-panel p {
   font-size: 1.1rem;
   font-weight: 700;
   margin: 0;
+}
+
+.status-playing {
+  color: #38bdf8;
+}
+
+.status-won {
+  color: #22c55e;
+}
+
+.status-lost {
+  color: #ef4444;
 }
 
 label {

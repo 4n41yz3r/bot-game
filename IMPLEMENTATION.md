@@ -1,6 +1,6 @@
 # Implementation Specification
 
-JavaScript Bot is implemented as a browser game with a testable TypeScript game
+JS Bot Game is implemented as a browser game with a testable TypeScript game
 engine. The game runs in the browser. Development tools run on Node.js.
 
 ## Technology Stack

@@ -4,7 +4,7 @@ This file defines how agents work in this repository.
 
 ## Project Summary
 
-JavaScript Bot is a browser game for teaching children programming with
+JS Bot Game is a browser game for teaching children programming with
 JavaScript. The player writes one complete JavaScript program per attempt to
 guide a bot across an 8-by-8 grid.
 

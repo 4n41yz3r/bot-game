@@ -1,6 +1,6 @@
-# JavaScript Bot
+# JS Bot Game
 
-JavaScript Bot is a planned programming game for teaching children basic
+JS Bot Game is a planned programming game for teaching children basic
 programming concepts. The player writes a JavaScript program that guides a bot
 across a map. The bot must reach the goal before it runs out of fuel or moves
 into a hazard.

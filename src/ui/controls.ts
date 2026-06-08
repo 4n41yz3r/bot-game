@@ -24,7 +24,7 @@ export function mountGame(root: HTMLElement): void {
   let game = createGame();
 
   const heading = document.createElement("h1");
-  heading.textContent = "JS Bot";
+  heading.textContent = "JS Bot Game";
 
   const layout = document.createElement("section");
   layout.className = "game-layout";
@@ -45,18 +45,27 @@ export function mountGame(root: HTMLElement): void {
   legend.dataset.testid = "legend";
   legend.setAttribute("aria-label", "Map pictogram legend");
   legend.innerHTML = `
-    <li><span aria-hidden="true">🤖</span> Robot</li>
-    <li><span aria-hidden="true">⚠️</span> Hazard</li>
-    <li><span aria-hidden="true">⚡</span> Fuel</li>
-    <li><span aria-hidden="true">🚩</span> Goal</li>
+    <li><span aria-hidden="true">🤖</span><strong>Robot</strong><small>Shows the bot position and direction.</small></li>
+    <li><span aria-hidden="true">⚠️</span><strong>Hazard</strong><small>Destroys the bot.</small></li>
+    <li><span aria-hidden="true">⚡</span><strong>Fuel</strong><small>Adds 5 fuel when collected.</small></li>
+    <li><span aria-hidden="true">🚩</span><strong>Goal</strong><small>Reach it to win.</small></li>
   `;
 
   const fuel = document.createElement("p");
   fuel.dataset.testid = "fuel";
 
   const status = document.createElement("p");
+  status.className = "status";
   status.dataset.testid = "status";
   status.setAttribute("aria-live", "polite");
+
+  const statusLabel = document.createElement("span");
+  statusLabel.dataset.testid = "status-label";
+  statusLabel.textContent = "Status: ";
+
+  const statusValue = document.createElement("span");
+  statusValue.dataset.testid = "status-value";
+  status.append(statusLabel, statusValue);
 
   const label = document.createElement("label");
   label.id = "player-code-label";
@@ -162,7 +171,8 @@ export function mountGame(root: HTMLElement): void {
     renderGame(canvas, game);
     positionRobotPictogram(robot, game);
     fuel.textContent = `Fuel: ${game.bot.fuel}`;
-    status.textContent = `Status: ${statusText(game.status)}`;
+    statusValue.className = `status-value status-${game.status}`;
+    statusValue.textContent = statusText(game.status);
   }
 }
 

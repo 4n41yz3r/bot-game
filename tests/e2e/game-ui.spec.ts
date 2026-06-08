@@ -13,13 +13,18 @@ declare global {
 test("loads the game page and displays the map", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: "JS Bot" })).toBeVisible();
+  await expect(page).toHaveTitle("JS Bot Game");
+  await expect(page.getByRole("heading", { name: "JS Bot Game" })).toBeVisible();
   await expect(page.getByTestId("game-map")).toBeVisible();
   await expect(page.getByTestId("robot-pictogram")).toBeVisible();
   await expect(page.getByTestId("legend")).toContainText("Robot");
+  await expect(page.getByTestId("legend")).toContainText("Shows the bot position and direction.");
   await expect(page.getByTestId("legend")).toContainText("Hazard");
+  await expect(page.getByTestId("legend")).toContainText("Destroys the bot.");
   await expect(page.getByTestId("legend")).toContainText("Fuel");
+  await expect(page.getByTestId("legend")).toContainText("Adds 5 fuel when collected.");
   await expect(page.getByTestId("legend")).toContainText("Goal");
+  await expect(page.getByTestId("legend")).toContainText("Reach it to win.");
   await expect(page.getByTestId("fuel")).toContainText("10");
   await expect(page.getByTestId("status")).toContainText("Playing");
 });
@@ -72,6 +77,69 @@ test("runs a player program and updates the visible game state", async ({
 
   await expect(page.getByTestId("fuel")).toContainText("9");
   await expect(page.getByTestId("status")).toContainText("Playing");
+});
+
+test("color codes only the status value text", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.getByTestId("status-label")).toHaveCSS(
+    "color",
+    "rgb(226, 232, 240)"
+  );
+  await expect(page.getByTestId("status-value")).toHaveCSS(
+    "color",
+    "rgb(56, 189, 248)"
+  );
+
+  await page.evaluate(() => {
+    window.javascriptBotGame.setGameState({
+      width: 8,
+      height: 8,
+      bot: {
+        position: { x: 3, y: 3 },
+        direction: "north",
+        fuel: 10
+      },
+      squares: Array.from({ length: 8 }, () =>
+        Array.from({ length: 8 }, () => ({ type: "empty" }))
+      ),
+      status: "won"
+    });
+  });
+
+  await expect(page.getByTestId("status-label")).toHaveCSS(
+    "color",
+    "rgb(226, 232, 240)"
+  );
+  await expect(page.getByTestId("status-value")).toHaveCSS(
+    "color",
+    "rgb(34, 197, 94)"
+  );
+
+  await page.evaluate(() => {
+    window.javascriptBotGame.setGameState({
+      width: 8,
+      height: 8,
+      bot: {
+        position: { x: 3, y: 3 },
+        direction: "north",
+        fuel: 10
+      },
+      squares: Array.from({ length: 8 }, () =>
+        Array.from({ length: 8 }, () => ({ type: "empty" }))
+      ),
+      status: "lost"
+    });
+  });
+
+  await expect(page.getByTestId("status-label")).toHaveCSS(
+    "color",
+    "rgb(226, 232, 240)"
+  );
+  await expect(page.getByTestId("status-value")).toHaveCSS(
+    "color",
+    "rgb(239, 68, 68)"
+  );
 });
 
 test("highlights JavaScript syntax in the command editor", async ({ page }) => {
