@@ -40,7 +40,7 @@ Squares can contain:
 | --- | --- |
 | Empty | Nothing happens. |
 | Hazard | The bot is destroyed and the player loses the game. |
-| Power-up | The bot gains 3 fuel points the first time it enters the square. |
+| Power-up | The bot gains 5 fuel points the first time it enters the square. |
 | Goal | The player wins the game. |
 
 Any position outside the map is treated as a hazard.

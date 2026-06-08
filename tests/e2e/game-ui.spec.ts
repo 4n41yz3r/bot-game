@@ -88,6 +88,17 @@ test("highlights JavaScript syntax in the command editor", async ({ page }) => {
   await expect(page.locator(".cm-content")).toContainText("turn_left");
 });
 
+test("uses a white cursor in the command editor", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByLabel("Program Your Bot").click();
+
+  await expect(page.locator(".cm-cursor").first()).toHaveCSS(
+    "border-left-color",
+    "rgb(255, 255, 255)"
+  );
+});
+
 test("shows a win message", async ({ page }) => {
   await page.goto("/");
 

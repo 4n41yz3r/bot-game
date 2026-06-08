@@ -94,10 +94,13 @@ export function mountGame(root: HTMLElement): void {
           minHeight: "28rem"
         },
         ".cm-content": {
-          caretColor: "#e2e8f0",
+          caretColor: "#ffffff",
           fontFamily: 'Consolas, "Courier New", monospace',
           minHeight: "28rem",
           padding: "0.75rem"
+        },
+        ".cm-cursor, .cm-dropCursor": {
+          borderLeftColor: "#ffffff"
         },
         ".cm-focused": {
           outline: "2px solid #38bdf8",

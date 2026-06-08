@@ -15,6 +15,7 @@ const HAZARD_COUNT = 10;
 const POWER_UP_COUNT = 5;
 const TURN_LEFT_FUEL_COST = 1;
 const MOVE_FUEL_COST = 1;
+const POWER_UP_FUEL_GAIN = 5;
 
 export function createGame(): GameState {
   const squares = createEmptyMap();
@@ -190,7 +191,7 @@ function collectPowerUp(game: GameState, position: Position): GameState {
     ...game,
     bot: {
       ...game.bot,
-      fuel: game.bot.fuel + 3
+      fuel: game.bot.fuel + POWER_UP_FUEL_GAIN
     },
     squares: game.squares.map((row, y) =>
       row.map((square, x) =>

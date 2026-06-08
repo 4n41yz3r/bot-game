@@ -138,7 +138,7 @@ consumes fuel. Moving consumes fuel.
 If the bot finishes a command with 0 fuel and has not reached the goal, the
 game status becomes `lost`.
 
-Power-ups add exactly 3 fuel points. Fuel can exceed 10 points.
+Power-ups add exactly 5 fuel points. Fuel can exceed 10 points.
 
 Each power-up can be collected once. Re-entering a collected power-up square
 does not add fuel.
@@ -152,7 +152,7 @@ Entering a hazard sets the game status to `lost`.
 Moving outside the 8-by-8 map is treated as entering a hazard and sets the game
 status to `lost`.
 
-Entering a power-up square applies the move fuel cost, then adds 3 fuel points
+Entering a power-up square applies the move fuel cost, then adds 5 fuel points
 if the power-up has not already been collected.
 
 Entering the goal square sets the game status to `won`.

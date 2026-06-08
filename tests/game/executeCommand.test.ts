@@ -61,13 +61,13 @@ describe("executeCommand", () => {
     expect(result.status).toBe("lost");
   });
 
-  it("adds 3 fuel after move cost when collecting a power-up", () => {
+  it("adds 5 fuel after move cost when collecting a power-up", () => {
     const game = gameWithBot({ position: { x: 3, y: 3 }, fuel: 8 });
     game.squares[2][3] = { type: "power-up" };
 
     const result = executeCommand(game, "move");
 
-    expect(result.bot.fuel).toBe(10);
+    expect(result.bot.fuel).toBe(12);
     expect(result.squares[2][3].collected).toBe(true);
   });
 
@@ -86,7 +86,7 @@ describe("executeCommand", () => {
 
     const result = executeCommand(game, "move");
 
-    expect(result.bot.fuel).toBe(12);
+    expect(result.bot.fuel).toBe(14);
   });
 });
 

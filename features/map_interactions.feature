@@ -25,7 +25,7 @@ Feature: Interact with the map
     Given the bot has 8 fuel points
     And the square in front of the bot is a power-up
     When the bot executes "move()"
-    Then the bot has 10 fuel points
+    Then the bot has 12 fuel points
 
   Scenario: Collect a power-up only once
     Given the bot has already collected a power-up
@@ -37,4 +37,4 @@ Feature: Interact with the map
     Given the bot has 10 fuel points
     And the square in front of the bot is a power-up
     When the bot executes "move()"
-    Then the bot has 12 fuel points
+    Then the bot has 14 fuel points
