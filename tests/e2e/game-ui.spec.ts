@@ -156,6 +156,30 @@ test("highlights JavaScript syntax in the command editor", async ({ page }) => {
   await expect(page.locator(".cm-content")).toContainText("turn_left");
 });
 
+test("wraps the command editor border around the editor children", async ({
+  page
+}) => {
+  await page.goto("/");
+
+  await expect(page.getByTestId("code-editor-shell")).toHaveCSS(
+    "border-left-width",
+    "1px"
+  );
+  await expect(page.getByTestId("code-editor-shell")).toHaveCSS(
+    "border-radius",
+    "8px"
+  );
+  await expect(page.getByTestId("code-editor-shell")).toHaveCSS(
+    "padding",
+    "3.2px"
+  );
+  await expect(page.locator(".cm-editor")).toHaveCSS(
+    "border-left-width",
+    "0px"
+  );
+  await expect(page.locator(".cm-editor")).toHaveCSS("border-radius", "0px");
+});
+
 test("uses a white cursor in the command editor", async ({ page }) => {
   await page.goto("/");
 

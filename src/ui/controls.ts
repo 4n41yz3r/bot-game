@@ -71,9 +71,14 @@ export function mountGame(root: HTMLElement): void {
   label.id = "player-code-label";
   label.textContent = "Program Your Bot";
 
+  const editorShell = document.createElement("div");
+  editorShell.className = "editor-shell";
+  editorShell.dataset.testid = "code-editor-shell";
+
   const editorFrame = document.createElement("div");
   editorFrame.className = "editor-frame";
   editorFrame.dataset.testid = "code-editor";
+  editorShell.append(editorFrame);
 
   const editorView = new EditorView({
     doc: "turn_left();\nmove();",
@@ -96,8 +101,8 @@ export function mountGame(root: HTMLElement): void {
       EditorView.theme({
         "&": {
           backgroundColor: "#020617",
-          border: "1px solid #64748b",
-          borderRadius: "0.5rem",
+          border: "0",
+          borderRadius: "0",
           color: "#e2e8f0",
           fontSize: "1rem",
           minHeight: "28rem"
@@ -143,7 +148,7 @@ export function mountGame(root: HTMLElement): void {
     update();
   });
 
-  panel.append(legend, fuel, status, label, editorFrame, runButton);
+  panel.append(legend, fuel, status, label, editorShell, runButton);
   layout.append(mapFrame, panel);
   root.replaceChildren(heading, layout);
 
