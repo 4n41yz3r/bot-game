@@ -3,12 +3,14 @@ import type { GameState, MapSquare, Position } from "../../src/game/types";
 
 declare global {
   interface Window {
-    javascriptBotGame: {
+    jsBotGameTestApi?: {
       setGameState(gameState: GameState): void;
       setSquare(position: Position, square: MapSquare): void;
     };
   }
 }
+
+const TEST_API_URL = "/?testApi=1";
 
 test("loads the game page and displays the map", async ({ page }) => {
   await page.goto("/");
@@ -27,6 +29,14 @@ test("loads the game page and displays the map", async ({ page }) => {
   await expect(page.getByTestId("legend")).toContainText("Reach it to win.");
   await expect(page.getByTestId("fuel")).toContainText("10");
   await expect(page.getByTestId("status")).toContainText("Playing");
+});
+
+test("does not expose the browser test API by default", async ({ page }) => {
+  await page.goto("/");
+
+  await expect
+    .poll(() => page.evaluate(() => "jsBotGameTestApi" in window))
+    .toBe(false);
 });
 
 test("uses the remaining right-side space on wide screens", async ({ page }) => {
@@ -106,7 +116,7 @@ test("runs a player program and updates the visible game state", async ({
 });
 
 test("color codes only the status value text", async ({ page }) => {
-  await page.goto("/");
+  await page.goto(TEST_API_URL);
 
   await expect(page.getByTestId("status-label")).toHaveCSS(
     "color",
@@ -118,7 +128,7 @@ test("color codes only the status value text", async ({ page }) => {
   );
 
   await page.evaluate(() => {
-    window.javascriptBotGame.setGameState({
+    window.jsBotGameTestApi!.setGameState({
       width: 8,
       height: 8,
       bot: {
@@ -143,7 +153,7 @@ test("color codes only the status value text", async ({ page }) => {
   );
 
   await page.evaluate(() => {
-    window.javascriptBotGame.setGameState({
+    window.jsBotGameTestApi!.setGameState({
       width: 8,
       height: 8,
       bot: {
@@ -218,10 +228,10 @@ test("uses a white cursor in the command editor", async ({ page }) => {
 });
 
 test("shows a win message", async ({ page }) => {
-  await page.goto("/");
+  await page.goto(TEST_API_URL);
 
   await page.evaluate(() => {
-    window.javascriptBotGame.setGameState({
+    window.jsBotGameTestApi!.setGameState({
       width: 8,
       height: 8,
       bot: {
@@ -234,7 +244,7 @@ test("shows a win message", async ({ page }) => {
       ),
       status: "playing"
     });
-    window.javascriptBotGame.setSquare({ x: 3, y: 2 }, { type: "goal" });
+    window.jsBotGameTestApi!.setSquare({ x: 3, y: 2 }, { type: "goal" });
   });
 
   await page.getByLabel("Program Your Bot").fill("move();");

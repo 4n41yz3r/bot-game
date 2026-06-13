@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { executeCommand } from "../../src/game/engine";
+import { executeCommand } from "../../src/game/commandExecutor";
 import type { Direction, GameState } from "../../src/game/types";
 
 describe("executeCommand", () => {

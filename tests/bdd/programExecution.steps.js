@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 
 import { Given, Then, When } from "@cucumber/cucumber";
 
-import { runProgram } from "../../src/game/engine.ts";
+import { runProgram } from "../../src/application/programRunner.ts";
 
 Given("the player has written a valid JavaScript program", function () {
   ensureGame(this);
@@ -54,4 +54,3 @@ function ensureGame(world) {
     status: "playing"
   };
 }
-

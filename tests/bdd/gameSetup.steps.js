@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 
 import { Then, When } from "@cucumber/cucumber";
 
-import { createGame } from "../../src/game/engine.ts";
+import { createGame } from "../../src/game/mapGenerator.ts";
 
 When("a new game is started", function () {
   this.game = createGame();

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 
 import { Given, Then, When } from "@cucumber/cucumber";
 
-import { executeCommand } from "../../src/game/engine.ts";
+import { executeCommand } from "../../src/game/commandExecutor.ts";
 
 Given("the square in front of the bot is the goal", function () {
   ensureGame(this);
@@ -88,4 +88,3 @@ function positionInFront(game) {
     y: game.bot.position.y + offset.y
   };
 }
-

@@ -20,15 +20,18 @@ engine. The game runs in the browser. Development tools run on Node.js.
 
 ```text
 src/
+  application/
+    programRunner.ts
   game/
     types.ts
-    direction.ts
-    map.ts
-    bot.ts
+    commandExecutor.ts
+    mapGenerator.ts
     engine.ts
   ui/
     canvasRenderer.ts
+    controlViewModels.ts
     controls.ts
+    testApi.ts
   main.ts
 
 features/
@@ -43,17 +46,17 @@ tests/
 
 ## Game Engine
 
-The game engine owns all game rules and state transitions. It does not depend on
-the DOM, Canvas, browser UI, or user input controls.
+The game domain owns game rules and state transitions. It does not depend on the
+DOM, Canvas, browser UI, user input controls, or player-code execution details.
 
-The engine exposes functions for creating games, executing bot commands, and
-running player programs.
+Domain modules expose functions for creating games and executing bot commands.
+`engine.ts` re-exports the public domain and application entry points for
+compatibility.
 
 ```ts
 createGame() -> GameState
 executeCommand(gameState, "move") -> GameState
 executeCommand(gameState, "turn_left") -> GameState
-runProgram(gameState, playerCode) -> GameResult
 ```
 
 The engine represents:
@@ -112,6 +115,10 @@ type GameState = {
 
 The bot, goal, hazards, and power-ups are placed randomly. Generated maps are
 not required to be solvable.
+
+Map generation is implemented in `src/game/mapGenerator.ts`. Randomness is
+provided through an injectable random source, with `Math.random` used by
+default.
 
 ## Commands
 
@@ -179,8 +186,10 @@ The program runs against the current game state until:
 
 Commands executed after the game reaches `won` or `lost` have no effect.
 
-Player code is executed in an isolated environment. The implementation exposes
-only the intended game command API to the player program.
+Player program execution is implemented in `src/application/programRunner.ts`.
+The runner passes the intended game command API to the player program and uses
+the domain command executor to apply command effects. Common browser globals are
+shadowed for gameplay purposes; this is not a security sandbox.
 
 ## Rendering
 
@@ -205,8 +214,11 @@ rules.
 The UI provides a text input area for the player's JavaScript program and a run
 control for starting an attempt.
 
-Running a program sends the full program text to the engine. The result is
-rendered after execution.
+Running a program sends the full program text to the application runner. The
+result is rendered after execution.
+
+The browser exposes a test-only state setup API only when the page is loaded
+with `?testApi=1`. It is not installed on the default page.
 
 ## Unit Tests
 

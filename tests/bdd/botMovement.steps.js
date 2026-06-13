@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 
 import { Given, Then, When } from "@cucumber/cucumber";
 
-import { executeCommand } from "../../src/game/engine.ts";
+import { executeCommand } from "../../src/game/commandExecutor.ts";
 
 Given("the bot has {int} fuel point", function (fuel) {
   ensureGame(this);

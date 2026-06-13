@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { runProgram } from "../../src/game/engine";
+import { runProgram } from "../../src/application/programRunner";
 import type { GameState } from "../../src/game/types";
 
 describe("runProgram", () => {

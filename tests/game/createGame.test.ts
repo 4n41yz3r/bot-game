@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { createGame } from "../../src/game/engine";
+import { createGame } from "../../src/game/mapGenerator";
 
 describe("createGame", () => {
   it("creates a new playing game on an 8 by 8 map with a fueled bot", () => {
@@ -35,6 +35,16 @@ describe("createGame", () => {
     expect(counts.goal).toBe(1);
     expect(counts.hazard).toBe(10);
     expect(counts["power-up"]).toBe(5);
+  });
+
+  it("uses an injected random source for deterministic placement", () => {
+    const game = createGame({ random: () => 0 });
+
+    expect(game.bot.position).toEqual({ x: 0, y: 0 });
+    expect(game.squares[7][7]).toEqual({ type: "goal" });
+    expect(game.squares[7][6]).toEqual({ type: "hazard" });
+    expect(game.squares[7][5]).toEqual({ type: "hazard" });
+    expect(game.squares[6][4]).toEqual({ type: "power-up" });
   });
 });
 
