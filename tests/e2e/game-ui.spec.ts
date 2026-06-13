@@ -50,6 +50,32 @@ test("uses the remaining right-side space on wide screens", async ({ page }) => 
   expect(panelRight).toBeGreaterThan(layoutRight - 4);
 });
 
+test("places map details below the map and keeps the right pane for controls", async ({
+  page
+}) => {
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await page.goto("/");
+
+  const map = await page.locator(".map-frame").boundingBox();
+  const legend = await page.getByTestId("legend").boundingBox();
+  const fuel = await page.getByTestId("fuel").boundingBox();
+  const status = await page.getByTestId("status").boundingBox();
+  const editor = await page.getByTestId("code-editor-shell").boundingBox();
+
+  expect(map).not.toBeNull();
+  expect(legend).not.toBeNull();
+  expect(fuel).not.toBeNull();
+  expect(status).not.toBeNull();
+  expect(editor).not.toBeNull();
+
+  expect(legend!.y).toBeGreaterThan(map!.y + map!.height);
+  expect(fuel!.y).toBeGreaterThan(legend!.y);
+  expect(status!.y).toBeGreaterThan(fuel!.y);
+  expect(editor!.x).toBeGreaterThan(map!.x + map!.width);
+  await expect(page.getByText("Program Your Bot")).toHaveCount(0);
+  await expect(page.getByLabel("Program Your Bot")).toBeVisible();
+});
+
 test("orients the robot pictogram with CSS transforms", async ({ page }) => {
   await page.goto("/");
 
@@ -151,7 +177,7 @@ test("highlights JavaScript syntax in the command editor", async ({ page }) => {
 
   await expect(page.getByTestId("code-editor")).toBeVisible();
   await expect(page.locator(".cm-editor")).toBeVisible();
-  await expect(page.locator(".cm-editor")).toHaveCSS("min-height", "448px");
+  await expect(page.locator(".cm-editor")).toHaveCSS("min-height", "544px");
   await expect(page.locator(".cm-content")).toContainText("function");
   await expect(page.locator(".cm-content")).toContainText("turn_left");
 });

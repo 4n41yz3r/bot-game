@@ -39,6 +39,12 @@ h1 {
   width: 384px;
 }
 
+.map-pane {
+  display: grid;
+  gap: 0.75rem;
+  width: 384px;
+}
+
 canvas {
   background: #f8fafc;
   border: 2px solid #94a3b8;
@@ -132,7 +138,8 @@ canvas {
   font-size: 0.9rem;
 }
 
-.control-panel p {
+.control-panel p,
+.map-pane p {
   font-size: 1.1rem;
   font-weight: 700;
   margin: 0;

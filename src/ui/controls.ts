@@ -29,6 +29,9 @@ export function mountGame(root: HTMLElement): void {
   const layout = document.createElement("section");
   layout.className = "game-layout";
 
+  const mapPane = document.createElement("section");
+  mapPane.className = "map-pane";
+
   const mapFrame = document.createElement("div");
   mapFrame.className = "map-frame";
 
@@ -67,10 +70,6 @@ export function mountGame(root: HTMLElement): void {
   statusValue.dataset.testid = "status-value";
   status.append(statusLabel, statusValue);
 
-  const label = document.createElement("label");
-  label.id = "player-code-label";
-  label.textContent = "Program Your Bot";
-
   const editorShell = document.createElement("div");
   editorShell.className = "editor-shell";
   editorShell.dataset.testid = "code-editor-shell";
@@ -96,7 +95,7 @@ export function mountGame(root: HTMLElement): void {
       ),
       EditorView.lineWrapping,
       EditorView.contentAttributes.of({
-        "aria-labelledby": "player-code-label"
+        "aria-label": "Program Your Bot"
       }),
       EditorView.theme({
         "&": {
@@ -105,12 +104,12 @@ export function mountGame(root: HTMLElement): void {
           borderRadius: "0",
           color: "#e2e8f0",
           fontSize: "1rem",
-          minHeight: "28rem"
+          minHeight: "34rem"
         },
         ".cm-content": {
           caretColor: "#ffffff",
           fontFamily: 'Consolas, "Courier New", monospace',
-          minHeight: "28rem",
+          minHeight: "34rem",
           padding: "0.75rem"
         },
         ".cm-cursor, .cm-dropCursor": {
@@ -148,8 +147,9 @@ export function mountGame(root: HTMLElement): void {
     update();
   });
 
-  panel.append(legend, fuel, status, label, editorShell, runButton);
-  layout.append(mapFrame, panel);
+  mapPane.append(mapFrame, legend, fuel, status);
+  panel.append(editorShell, runButton);
+  layout.append(mapPane, panel);
   root.replaceChildren(heading, layout);
 
   window.javascriptBotGame = {
