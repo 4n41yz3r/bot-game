@@ -23,3 +23,15 @@ Feature: Run a bot program
     Then the bot turns 90 degrees to the right
     And the bot uses 3 fuel points
 
+  Scenario: Stop an infinite command loop after the game ends
+    Given the square in front of the bot is a hazard
+    And the player has written:
+      """
+      while (true) {
+        move();
+      }
+      """
+    When the player runs the program
+    Then the bot is destroyed
+    And the player loses the game
+    And the program is executed as one attempt

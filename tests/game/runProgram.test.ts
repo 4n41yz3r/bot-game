@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { execFile } from "node:child_process";
 
 import { runProgram } from "../../src/application/programRunner";
 import type { GameState } from "../../src/game/types";
@@ -68,6 +69,14 @@ describe("runProgram", () => {
     expect(result.state.bot.position).toEqual({ x: 3, y: 3 });
     expect(result.state.bot.direction).toBe("west");
   });
+
+  it("stops executing an infinite command loop after encountering a hazard", async () => {
+    const state = await runInfiniteMoveLoopInChildProcess();
+
+    expect(state.status).toBe("lost");
+    expect(state.bot.position).toEqual({ x: 3, y: 2 });
+    expect(state.bot.fuel).toBe(9);
+  });
 });
 
 function gameWithBot(): GameState {
@@ -84,4 +93,49 @@ function gameWithBot(): GameState {
     ),
     status: "playing"
   };
+}
+
+function runInfiniteMoveLoopInChildProcess(): Promise<GameState> {
+  const script = `
+    import { runProgram } from "./src/application/programRunner.ts";
+
+    const game = {
+      width: 8,
+      height: 8,
+      bot: {
+        position: { x: 3, y: 3 },
+        direction: "north",
+        fuel: 10
+      },
+      squares: Array.from({ length: 8 }, () =>
+        Array.from({ length: 8 }, () => ({ type: "empty" }))
+      ),
+      status: "playing"
+    };
+    game.squares[2][3] = { type: "hazard" };
+
+    const result = runProgram(game, "while (true) { move(); }");
+    console.log(JSON.stringify(result.state));
+  `;
+
+  return new Promise((resolve, reject) => {
+    const child = execFile(
+      process.execPath,
+      ["--input-type=module", "--eval", script],
+      {
+        cwd: process.cwd(),
+        timeout: 1000
+      },
+      (error, stdout) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+
+        resolve(JSON.parse(stdout) as GameState);
+      }
+    );
+
+    child.on("error", reject);
+  });
 }
