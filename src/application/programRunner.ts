@@ -16,12 +16,17 @@ export function runProgram(
     move() {
       state = executeCommand(state, "move");
       stopProgramIfGameEnded(state);
+    },
+    fire() {
+      state = executeCommand(state, "fire");
+      stopProgramIfGameEnded(state);
     }
   };
 
   const program = new Function(
     "turn_left",
     "move",
+    "fire",
     "globalThis",
     "window",
     "self",
@@ -34,6 +39,7 @@ export function runProgram(
     program(
       commands.turn_left,
       commands.move,
+      commands.fire,
       undefined,
       undefined,
       undefined,

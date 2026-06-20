@@ -29,6 +29,22 @@ Given("the square in front of the bot is a power-up", function () {
   setSquareInFront(this.game, { type: "power-up" });
 });
 
+Given("a hazard is {int} squares in front of the bot", function (distance) {
+  ensureGame(this);
+  this.hazardPosition = positionInFront(this.game, distance);
+  this.game.squares[this.hazardPosition.y][this.hazardPosition.x] = {
+    type: "hazard"
+  };
+});
+
+Given("a power-up is {int} square in front of the bot", function (distance) {
+  ensureGame(this);
+  this.powerUpPosition = positionInFront(this.game, distance);
+  this.game.squares[this.powerUpPosition.y][this.powerUpPosition.x] = {
+    type: "power-up"
+  };
+});
+
 Given("the bot has already collected a power-up", function () {
   ensureGame(this);
   setSquareInFront(this.game, { type: "power-up", collected: true });
@@ -46,6 +62,22 @@ Then("the player wins the game", function () {
 
 Then("the bot is destroyed", function () {
   assert.equal(this.game.status, "lost");
+});
+
+Then("the hazard is destroyed", function () {
+  assert.deepEqual(squareAt(this.game, this.hazardPosition), { type: "empty" });
+});
+
+Then("the power-up is destroyed", function () {
+  assert.deepEqual(squareAt(this.game, this.powerUpPosition), {
+    type: "empty"
+  });
+});
+
+Then("the hazard remains", function () {
+  assert.deepEqual(squareAt(this.game, this.hazardPosition), {
+    type: "hazard"
+  });
 });
 
 function ensureGame(world) {
@@ -74,7 +106,7 @@ function setSquareInFront(game, square) {
   game.squares[position.y][position.x] = square;
 }
 
-function positionInFront(game) {
+function positionInFront(game, distance = 1) {
   const offsets = {
     north: { x: 0, y: -1 },
     east: { x: 1, y: 0 },
@@ -84,7 +116,11 @@ function positionInFront(game) {
   const offset = offsets[game.bot.direction];
 
   return {
-    x: game.bot.position.x + offset.x,
-    y: game.bot.position.y + offset.y
+    x: game.bot.position.x + offset.x * distance,
+    y: game.bot.position.y + offset.y * distance
   };
+}
+
+function squareAt(game, position) {
+  return game.squares[position.y][position.x];
 }

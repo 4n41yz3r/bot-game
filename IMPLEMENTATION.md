@@ -126,11 +126,16 @@ The built-in bot commands are:
 
 - `turn_left()`
 - `move()`
+- `fire()`
 
 `turn_left()` rotates the bot 90 degrees left and costs 1 fuel point.
 
 `move()` moves the bot one square in the direction it is facing and costs
 1 fuel point.
+
+`fire()` shoots in the direction the bot is facing and costs 2 fuel points.
+The shot destroys the first hazard or power-up in the bot's line of sight. The
+destroyed square becomes empty.
 
 There is no built-in `turn_right()` command. Player code can define
 `turn_right()` or any other helper function using JavaScript.
@@ -164,6 +169,9 @@ if the power-up has not already been collected.
 
 Entering the goal square sets the game status to `won`.
 
+Firing does not move the bot and does not apply square interaction effects. If
+there is no hazard or power-up in line of sight, firing only consumes fuel.
+
 ## Player Program Execution
 
 The player writes one complete JavaScript program per attempt.
@@ -173,6 +181,7 @@ The execution environment exposes the built-in bot commands to player code:
 ```js
 turn_left();
 move();
+fire();
 ```
 
 Player code can use any valid JavaScript syntax, including variables,

@@ -2,6 +2,7 @@ import type { BotCommand, Direction, GameState, Position } from "./types";
 
 const TURN_LEFT_FUEL_COST = 1;
 const MOVE_FUEL_COST = 1;
+const FIRE_FUEL_COST = 2;
 const POWER_UP_FUEL_GAIN = 5;
 
 export function executeCommand(game: GameState, command: BotCommand): GameState {
@@ -9,10 +10,9 @@ export function executeCommand(game: GameState, command: BotCommand): GameState 
     return game;
   }
 
-  const updatedGame =
-    command === "turn_left" ? turnLeft(game) : moveForward(game);
+  const updatedGame = executePlayingCommand(game, command);
 
-  if (updatedGame.bot.fuel === 0 && updatedGame.status !== "won") {
+  if (updatedGame.bot.fuel <= 0 && updatedGame.status !== "won") {
     return {
       ...updatedGame,
       status: "lost"
@@ -20,6 +20,21 @@ export function executeCommand(game: GameState, command: BotCommand): GameState 
   }
 
   return updatedGame;
+}
+
+function executePlayingCommand(
+  game: GameState,
+  command: BotCommand
+): GameState {
+  if (command === "turn_left") {
+    return turnLeft(game);
+  }
+
+  if (command === "move") {
+    return moveForward(game);
+  }
+
+  return fire(game);
 }
 
 function turnLeft(game: GameState): GameState {
@@ -47,6 +62,30 @@ function moveForward(game: GameState): GameState {
   return applySquareInteraction(movedGame, position);
 }
 
+function fire(game: GameState): GameState {
+  const firedGame = {
+    ...game,
+    bot: {
+      ...game.bot,
+      fuel: game.bot.fuel - FIRE_FUEL_COST
+    }
+  };
+  const target = findShotTarget(firedGame);
+
+  if (!target) {
+    return firedGame;
+  }
+
+  return {
+    ...firedGame,
+    squares: firedGame.squares.map((row, y) =>
+      row.map((square, x) =>
+        x === target.x && y === target.y ? { type: "empty" } : square
+      )
+    )
+  };
+}
+
 function leftOf(direction: Direction): Direction {
   const leftTurns: Record<Direction, Direction> = {
     north: "west",
@@ -59,18 +98,46 @@ function leftOf(direction: Direction): Direction {
 }
 
 function nextPosition(position: Position, direction: Direction): Position {
+  const offset = directionOffset(direction);
+
+  return {
+    x: position.x + offset.x,
+    y: position.y + offset.y
+  };
+}
+
+function directionOffset(direction: Direction): Position {
   const movement: Record<Direction, Position> = {
     north: { x: 0, y: -1 },
     east: { x: 1, y: 0 },
     south: { x: 0, y: 1 },
     west: { x: -1, y: 0 }
   };
-  const offset = movement[direction];
 
-  return {
-    x: position.x + offset.x,
-    y: position.y + offset.y
+  return movement[direction];
+}
+
+function findShotTarget(game: GameState): Position | null {
+  const offset = directionOffset(game.bot.direction);
+  let position = {
+    x: game.bot.position.x + offset.x,
+    y: game.bot.position.y + offset.y
   };
+
+  while (isInsideMap(game, position)) {
+    const square = game.squares[position.y][position.x];
+
+    if (square.type === "hazard" || square.type === "power-up") {
+      return position;
+    }
+
+    position = {
+      x: position.x + offset.x,
+      y: position.y + offset.y
+    };
+  }
+
+  return null;
 }
 
 function applySquareInteraction(game: GameState, position: Position): GameState {

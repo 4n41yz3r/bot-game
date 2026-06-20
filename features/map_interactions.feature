@@ -38,3 +38,19 @@ Feature: Interact with the map
     And the square in front of the bot is a power-up
     When the bot executes "move()"
     Then the bot has 14 fuel points
+
+  Scenario: Fire at a hazard in line of sight
+    Given the bot has 10 fuel points
+    And a hazard is 2 squares in front of the bot
+    When the bot executes "fire()"
+    Then the hazard is destroyed
+    And the bot has 8 fuel points
+
+  Scenario: Fire at the first target in line of sight
+    Given the bot has 10 fuel points
+    And a power-up is 1 square in front of the bot
+    And a hazard is 2 squares in front of the bot
+    When the bot executes "fire()"
+    Then the power-up is destroyed
+    And the hazard remains
+    And the bot has 8 fuel points

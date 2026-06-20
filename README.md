@@ -11,12 +11,13 @@ The player writes and runs one complete program per attempt. Any valid
 JavaScript code is allowed, including variables, conditionals, loops, and
 player-defined helper functions.
 
-The bot provides two built-in commands:
+The bot provides three built-in commands:
 
 | Command | Effect | Fuel cost |
 | --- | --- | ---: |
 | `turn_left()` | Turns the bot 90 degrees to the left. | 1 point |
 | `move()` | Moves the bot one square in the direction it is facing. | 1 point |
+| `fire()` | Shoots in the direction the bot is facing and destroys the first hazard or power-up in line of sight. | 2 points |
 
 There is no built-in `turn_right()` command. A player can turn right by calling
 `turn_left()` three times, or define a helper function such as:
@@ -44,6 +45,10 @@ Squares can contain:
 | Goal | The player wins the game. |
 
 Any position outside the map is treated as a hazard.
+
+Firing does not move the bot. A shot travels in a straight line in the direction
+the bot is facing until it reaches the map edge. The first hazard or power-up in
+that line is destroyed and becomes an empty square. Other squares are unchanged.
 
 ## Fuel and Outcomes
 

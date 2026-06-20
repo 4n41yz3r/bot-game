@@ -36,6 +36,16 @@ describe("runProgram", () => {
     expect(result.state.bot.fuel).toBe(7);
   });
 
+  it("exposes fire to player programs", () => {
+    const game = gameWithBot();
+    game.squares[2][3] = { type: "hazard" };
+
+    const result = runProgram(game, "fire();");
+
+    expect(result.state.squares[2][3]).toEqual({ type: "empty" });
+    expect(result.state.bot.fuel).toBe(8);
+  });
+
   it("does not let commands after a win change the game state", () => {
     const game = gameWithBot();
     game.squares[2][3] = { type: "goal" };

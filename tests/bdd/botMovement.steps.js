@@ -91,5 +91,9 @@ function parseCommand(commandText) {
     return "move";
   }
 
+  if (commandText === "fire()") {
+    return "fire";
+  }
+
   throw new Error(`Unknown bot command: ${commandText}`);
 }

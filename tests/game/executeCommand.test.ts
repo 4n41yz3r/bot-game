@@ -88,6 +88,57 @@ describe("executeCommand", () => {
 
     expect(result.bot.fuel).toBe(14);
   });
+
+  it("fires forward and spends 2 fuel points", () => {
+    const game = gameWithBot({
+      position: { x: 3, y: 3 },
+      direction: "north",
+      fuel: 10
+    });
+
+    const result = executeCommand(game, "fire");
+
+    expect(result.bot.position).toEqual({ x: 3, y: 3 });
+    expect(result.bot.fuel).toBe(8);
+  });
+
+  it("destroys the first hazard in the bot line of sight", () => {
+    const game = gameWithBot({ position: { x: 3, y: 3 }, fuel: 10 });
+    game.squares[1][3] = { type: "hazard" };
+
+    const result = executeCommand(game, "fire");
+
+    expect(result.squares[1][3]).toEqual({ type: "empty" });
+  });
+
+  it("destroys the first power-up in the bot line of sight", () => {
+    const game = gameWithBot({ position: { x: 3, y: 3 }, fuel: 10 });
+    game.squares[1][3] = { type: "power-up" };
+
+    const result = executeCommand(game, "fire");
+
+    expect(result.squares[1][3]).toEqual({ type: "empty" });
+  });
+
+  it("destroys only the first target in line of sight", () => {
+    const game = gameWithBot({ position: { x: 3, y: 3 }, fuel: 10 });
+    game.squares[2][3] = { type: "power-up" };
+    game.squares[1][3] = { type: "hazard" };
+
+    const result = executeCommand(game, "fire");
+
+    expect(result.squares[2][3]).toEqual({ type: "empty" });
+    expect(result.squares[1][3]).toEqual({ type: "hazard" });
+  });
+
+  it("loses when firing uses the last fuel points without reaching the goal", () => {
+    const game = gameWithBot({ fuel: 2 });
+
+    const result = executeCommand(game, "fire");
+
+    expect(result.bot.fuel).toBe(0);
+    expect(result.status).toBe("lost");
+  });
 });
 
 function gameWithBot(

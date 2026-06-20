@@ -4,7 +4,7 @@ export type SquareType = "empty" | "hazard" | "power-up" | "goal";
 
 export type GameStatus = "playing" | "won" | "lost";
 
-export type BotCommand = "turn_left" | "move";
+export type BotCommand = "turn_left" | "move" | "fire";
 
 export type Position = {
   x: number;
